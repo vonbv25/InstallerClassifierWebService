@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="6.1.000">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="6.1.000" expanded="true" name="Process">
+    <process expanded="true">
+      <operator activated="true" class="read_csv" compatibility="6.1.000" expanded="true" height="60" name="Read CSV" width="90" x="45" y="210">
+        <parameter key="csv_file" value="/home/von/Documents/research-installers.csv"/>
+        <parameter key="column_separators" value=","/>
+        <parameter key="first_row_as_names" value="false"/>
+        <list key="annotations">
+          <parameter key="0" value="Name"/>
+        </list>
+        <parameter key="encoding" value="UTF-8"/>
+        <list key="data_set_meta_data_information">
+          <parameter key="0" value="filename.true.text.attribute"/>
+          <parameter key="1" value="Children.true.real.attribute"/>
+          <parameter key="2" value="VSDT.true.text.attribute"/>
+          <parameter key="3" value="Size.true.real.attribute"/>
+          <parameter key="4" value="AdjustTokenPrivileges:CloseServiceHandle:DeleteService:LookupPrivilegeValueA:OpenProcessToken:OpenS….true.text.attribute"/>
+          <parameter key="5" value="ADVAPI32\.dll:COMCTL32\.dll:GDI32\.dll:KERNEL32\.dll:SHELL32\.dll:USER32\.dll:WINSPOOL\.DRV:WSOCK32\.dll:co….true.text.attribute"/>
+        </list>
+      </operator>
+      <operator activated="true" class="retrieve" compatibility="6.1.000" expanded="true" height="60" name="Retrieve wordlistInstaller" width="90" x="45" y="390">
+        <parameter key="repository_entry" value="//Local Repository/data/wordlistInstaller"/>
+      </operator>
+      <operator activated="true" class="multiply" compatibility="6.1.000" expanded="true" height="76" name="Multiply (2)" width="90" x="45" y="300"/>
+      <operator activated="true" class="retrieve" compatibility="6.1.000" expanded="true" height="60" name="Retrieve LogResModel" width="90" x="179" y="390">
+        <parameter key="repository_entry" value="//Local Repository/data/LogResModel"/>
+      </operator>
+      <operator activated="true" class="multiply" compatibility="6.1.000" expanded="true" height="76" name="Multiply" width="90" x="313" y="390"/>
+      <operator activated="true" class="retrieve" compatibility="6.1.000" expanded="true" height="60" name="Retrieve InstallerWeights" width="90" x="179" y="255">
+        <parameter key="repository_entry" value="//Local Repository/data/InstallerWeights"/>
+      </operator>
+      <operator activated="true" class="read_csv" compatibility="6.1.000" expanded="true" height="60" name="Read CSV (2)" width="90" x="45" y="480">
+        <parameter key="csv_file" value="/home/von/Documents/research-non-installers.csv"/>
+        <parameter key="column_separators" value=","/>
+        <parameter key="first_row_as_names" value="false"/>
+        <list key="annotations">
+          <parameter key="0" value="Name"/>
+        </list>
+        <parameter key="encoding" value="UTF-8"/>
+        <list key="data_set_meta_data_information">
+          <parameter key="0" value="Filename.true.text.id"/>
+          <parameter key="1" value="Children.true.real.attribute"/>
+          <parameter key="2" value="VSDT.true.text.attribute"/>
+          <parameter key="3" value="Size.true.real.attribute"/>
+          <parameter key="4" value="DecodePointer:DeleteCriticalSection:EncodePointer:EnterCriticalSection:ExitProcess:FreeEnvironmentStringsW:GetACP:GetCPInfo:GetCommandLineA:GetCurrentProcess:GetCurrentProcessId:GetCurrentThreadId:GetEnvironmentStringsW:GetFileType:GetLastError:GetModuleFileNameA:GetModuleFileNameW:GetModuleHandleW:GetOEMCP:GetProcAddress:GetStartupInfoW:GetStdHandle:GetStringTypeW:GetSystemTimeAsFileTime:GetTickCount:HeapAlloc:HeapCreate:HeapDestroy:HeapFree:HeapReAlloc:HeapSize:InitializeCriticalSectionAndSpinCount:InterlockedDecrement:InterlockedIncrement:IsDebuggerPresent:IsProcessorFeaturePresent:IsValidCodePage:LCMapStringW:LeaveCriticalSection:LoadLibraryW:MultiByteToWideChar:QueryPerformanceCounter:RaiseException:RtlUnwind:SetHandleCount:SetLastError:SetUnhandledExceptionFilter:Sleep:TerminateProcess:TlsAlloc:TlsFree:TlsGetValue:TlsSetValue:UnhandledExceptionFilter:WideCharToMultiByte:WriteFile.true.text.attribute"/>
+          <parameter key="5" value="KERNEL32\.dll.true.text.attribute"/>
+        </list>
+      </operator>
+      <operator activated="true" class="multiply" compatibility="6.1.000" expanded="true" height="76" name="Multiply (3)" width="90" x="313" y="255"/>
+      <operator activated="true" class="multiply" compatibility="6.1.000" expanded="true" height="94" name="Multiply (4)" width="90" x="45" y="75"/>
+      <operator activated="true" class="select_attributes" compatibility="6.1.000" expanded="true" height="76" name="Select Attributes" width="90" x="514" y="210">
+        <parameter key="attribute_filter_type" value="single"/>
+        <parameter key="attribute" value="filename"/>
+      </operator>
+      <operator activated="true" class="text:process_document_from_data" compatibility="5.3.002" expanded="true" height="76" name="Process Documents from Data" width="90" x="246" y="30">
+        <list key="specify_weights"/>
+        <process expanded="true">
+          <operator activated="true" class="text:tokenize" compatibility="5.3.002" expanded="true" height="60" name="Tokenize" width="90" x="112" y="75"/>
+          <operator activated="true" class="text:transform_cases" compatibility="5.3.002" expanded="true" height="60" name="Transform Cases" width="90" x="313" y="30"/>
+          <connect from_port="document" to_op="Tokenize" to_port="document"/>
+          <connect from_op="Tokenize" from_port="document" to_op="Transform Cases" to_port="document"/>
+          <connect from_op="Transform Cases" from_port="document" to_port="document 1"/>
+          <portSpacing port="source_document" spacing="0"/>
+          <portSpacing port="sink_document 1" spacing="0"/>
+          <portSpacing port="sink_document 2" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="true" class="select_by_weights" compatibility="6.1.000" expanded="true" height="94" name="Select by Weights" width="90" x="380" y="30">
+        <parameter key="weight" value="0.2"/>
+      </operator>
+      <operator activated="true" class="apply_model" compatibility="6.1.000" expanded="true" height="76" name="Apply Model" width="90" x="514" y="75">
+        <list key="application_parameters"/>
+      </operator>
+      <connect from_op="Read CSV" from_port="output" to_op="Multiply (4)" to_port="input"/>
+      <connect from_op="Retrieve wordlistInstaller" from_port="output" to_op="Multiply (2)" to_port="input"/>
+      <connect from_op="Multiply (2)" from_port="output 1" to_op="Process Documents from Data" to_port="word list"/>
+      <connect from_op="Retrieve LogResModel" from_port="output" to_op="Multiply" to_port="input"/>
+      <connect from_op="Multiply" from_port="output 1" to_op="Apply Model" to_port="model"/>
+      <connect from_op="Retrieve InstallerWeights" from_port="output" to_op="Multiply (3)" to_port="input"/>
+      <connect from_op="Multiply (3)" from_port="output 1" to_op="Select by Weights" to_port="weights"/>
+      <connect from_op="Multiply (4)" from_port="output 1" to_op="Process Documents from Data" to_port="example set"/>
+      <connect from_op="Multiply (4)" from_port="output 2" to_op="Select Attributes" to_port="example set input"/>
+      <connect from_op="Select Attributes" from_port="example set output" to_port="result 2"/>
+      <connect from_op="Process Documents from Data" from_port="example set" to_op="Select by Weights" to_port="example set input"/>
+      <connect from_op="Select by Weights" from_port="example set output" to_op="Apply Model" to_port="unlabelled data"/>
+      <connect from_op="Apply Model" from_port="labelled data" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
+    </process>
+  </operator>
+</process>
